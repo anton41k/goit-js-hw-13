@@ -1,3 +1,7 @@
+:root {
+  --set-gap: 20px;
+}
+  
 * {
   box-sizing: border-box;
 }
@@ -16,4 +20,16 @@ body {
   background-size: cover;
 }
 
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
 
+  margin-left: calc(-1 * #{var(--set-gap)});
+  margin-top: calc(-1 * #{var(--set-gap)});
+}
+
+.photo-card {
+  flex-basis: calc(100% / 1 - #{var(--set-gap)});
+  margin-top: var(--set-gap);
+  margin-left: var(--set-gap);
+}
