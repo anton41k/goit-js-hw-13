@@ -10,12 +10,11 @@ export default class NewsApiService{
         this.page = 1;
         this.perPage = 40;
         this.totalHits = null;
-        //this.fetchCountries
     }
     
-    fetchCountries = async () => {
+    fetchCountries() {
         const url = `${BASE_URL}api/?key=${KEY}&q=${this.valueSearch}${param}&page=${this.page}&per_page=${this.perPage}`;
-        return await fetch(url)
+        return fetch(url)
             .then(response => {
                 return response.json();
             })
