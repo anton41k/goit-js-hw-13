@@ -27,6 +27,8 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
-    "notiflix": "^3.0.1"
+    "lodash.throttle": "^4.1.1",
+    "notiflix": "^3.0.1",
+    "simplelightbox": "^2.8.0"
   }
 }
