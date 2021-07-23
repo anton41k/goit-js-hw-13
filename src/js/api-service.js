@@ -1,4 +1,5 @@
 import SimpleLightbox from "simplelightbox";
+import axios from "axios";
 
 const KEY = '22580473-9722fdac11ed5197610aea928';
 const BASE_URL = 'https://pixabay.com/';
@@ -11,21 +12,20 @@ export default class NewsApiService{
         this.perPage = 40;
         this.totalHits = null;
     }
-    
-    fetchCountries() {
-        const url = `${BASE_URL}api/?key=${KEY}&q=${this.valueSearch}${param}&page=${this.page}&per_page=${this.perPage}`;
-        return fetch(url)
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-                this.totalHits = data.totalHits;
-                this.incrementPage();
-                console.log(this.page)
-                return data.hits;
-            })
+    async fetchCountries(){
+        
+            const url = `${BASE_URL}api/?key=${KEY}&q=${this.valueSearch}${param}&page=${this.page}&per_page=${this.perPage}`;
+            return await fetch(url)
+                .then(response => {
+                    return response.json();
+                })
+                .then(data => {
+                    this.totalHits = data.totalHits;
+                    this.incrementPage();
+                    return data.hits;
+                })
+        
     }
-
     get query() {
         return this.valueSearch;
     }

@@ -1,4 +1,5 @@
 import '../css/style.css';
+
 import Notiflix from 'notiflix';
 import _debounce from 'lodash.debounce';
 import getRefs from './get-refs';
@@ -9,6 +10,7 @@ const refs = getRefs();
 const newsApiService = new NewsApiService();
 const backgroundBody = 'https://st.depositphotos.com/2486211/3843/i/950/depositphotos_38431613-stock-photo-water-drops.jpg';
 const DEBOUNCE_DELAY = 300;
+
 
 newsApiService.randomBackgroundBody(backgroundBody);
 
@@ -27,13 +29,10 @@ function onSearch(ev) {
         Notiflix.Notify.failure("Sorry, you need to enter something into the search.");
         return
     }
-
+    scrollTo(0, 0)
     newsApiService.resetPage();
-    console.log(newsApiService.page)
     newsApiService.fetchCountries()
         .then(hits => {
-            console.log(newsApiService.valueSearch)
-            console.log(hits.length)
             if (hits.length !== 0) {
                 Notiflix.Notify.info(`Hooray! We found ${newsApiService.totalHits} images.`);
             }
@@ -47,13 +46,14 @@ function onSearch(ev) {
             clearHitsContainer();
             appendHits(hits);
             newsApiService.lightbox();
-            console.log(hits.length)
+            
 
         })
         .catch(onFetchError);
     
     
 }
+
 
 function onFetchError(error) {
     Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
@@ -64,15 +64,15 @@ function onFetchError(error) {
 function onLoadMore() {
     newsApiService.fetchCountries().then(hits => {
         appendHits(hits);
-        smoothScroll()
+        const cardHeight = refs.hitsContainer.firstElementChild.getBoundingClientRect().height;
+        smoothScroll(cardHeight)
     });
     
 }
 
-function smoothScroll() {
-    const cardHeight = refs.hitsContainer.firstElementChild.getBoundingClientRect();
+function smoothScroll(cardHeight) {
     window.scrollBy({
-        top: cardHeight.height * 3,
+        top: cardHeight * 3,
         behavior: 'smooth',
     });
 }
@@ -95,6 +95,5 @@ function onInfinityScroll() {
     if(y >= contentHeight){
         //загружаем новое содержимое в элемент
         onLoadMore();
-        console.log(contentHeight)
     }
 }
