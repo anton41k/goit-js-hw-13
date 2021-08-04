@@ -1,8 +1,10 @@
 import SimpleLightbox from "simplelightbox";
 import axios from "axios";
+import { awaitExpression } from "babel-types";
+
+axios.defaults.baseURL = 'https://pixabay.com/';
 
 const KEY = '22580473-9722fdac11ed5197610aea928';
-const BASE_URL = 'https://pixabay.com/';
 const param = '&image_type=photo&orientation=horizontal&safesearch=true';
 
 export default class NewsApiService{
@@ -14,17 +16,11 @@ export default class NewsApiService{
     }
     async fetchCountries(){
         
-            const url = `${BASE_URL}api/?key=${KEY}&q=${this.valueSearch}${param}&page=${this.page}&per_page=${this.perPage}`;
-            return await fetch(url)
-                .then(response => {
-                    return response.json();
-                })
-                .then(data => {
-                    this.totalHits = data.totalHits;
-                    this.incrementPage();
-                    return data.hits;
-                })
-        
+        const url = `api/?key=${KEY}&q=${this.valueSearch}${param}&page=${this.page}&per_page=${this.perPage}`;
+        const response = await axios.get(url);
+        this.totalHits = response.data.totalHits;
+        this.incrementPage();
+        return response.data.hits;
     }
     get query() {
         return this.valueSearch;

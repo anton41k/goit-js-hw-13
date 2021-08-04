@@ -13,16 +13,16 @@ const DEBOUNCE_DELAY = 300;
 
 
 newsApiService.randomBackgroundBody(backgroundBody);
+newsApiService.lightbox();
 
 refs.searchForm.addEventListener('submit', onSearch);
-refs.loadMoreBtn.addEventListener('click', onLoadMore);
 window.addEventListener('scroll', _debounce(onInfinityScroll, DEBOUNCE_DELAY));
 
 
 function onSearch(ev) {
     ev.preventDefault();
 
-    newsApiService.query = ev.currentTarget.elements.searchQuery.value;
+    newsApiService.query = ev.currentTarget.elements.searchQuery.value.trim();
     
     if (newsApiService.query === '') {
         clearHitsContainer();
@@ -32,7 +32,7 @@ function onSearch(ev) {
     scrollTo(0, 0)
     newsApiService.resetPage();
     newsApiService.fetchCountries()
-        .then(hits => {
+        .then(hits => {console.log(hits)
             if (hits.length !== 0) {
                 Notiflix.Notify.info(`Hooray! We found ${newsApiService.totalHits} images.`);
             }
@@ -45,9 +45,6 @@ function onSearch(ev) {
             newsApiService.randomUrlImg(hits);
             clearHitsContainer();
             appendHits(hits);
-            newsApiService.lightbox();
-            
-
         })
         .catch(onFetchError);
     
